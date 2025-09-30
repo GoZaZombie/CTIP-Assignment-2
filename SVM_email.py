@@ -1,0 +1,84 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import LabelEncoder
+from sklearn.svm import LinearSVC
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import classification_report, confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+import joblib
+
+email_dataset = pd.read_csv("email_dataset.csv", encoding="utf-8")
+
+
+email_dataset = email_dataset[['text', 'label']]
+
+
+email_dataset['text'] = email_dataset['text'].fillna("")
+
+
+label_encoder = LabelEncoder()
+email_dataset['label_encoded'] = label_encoder.fit_transform(email_dataset['label'])
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    email_dataset['text'],
+    email_dataset['label_encoded'],
+    test_size=0.5,
+    random_state=42,
+    stratify=email_dataset['label_encoded']
+)
+
+
+pipeline = Pipeline([
+    ("tfidf", TfidfVectorizer(
+        stop_words="english",
+        max_features=20000,   # allow bigger vocab for emails
+        ngram_range=(1,2)     # use unigrams + bigrams
+    )),
+    ("classifier", LinearSVC())
+])
+
+
+pipeline.fit(X_train, y_train)
+
+
+y_predictions = pipeline.predict(X_test)
+
+print("Support Vector Machine Results (Email Spam Dataset):")
+print(classification_report(y_test, y_predictions, target_names=['Ham', 'Spam']))
+
+
+conf_matrix = confusion_matrix(y_test, y_predictions)
+sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=['Ham', 'Spam'], yticklabels=['Ham', 'Spam'])
+plt.title("Confusion Matrix - Email Spam SVM")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
+
+joblib.dump(pipeline, "svm_email_spam_pipeline.pkl")
+print("SVM email spam pipeline saved!")
+
+
+def classify_email_with_svm(email_text: str) -> str:
+    """
+    Classifies an email as Spam or Ham using the trained SVM.
+    """
+    # Load saved pipeline (vectorizer + classifier)
+    loaded_pipeline = joblib.load("svm_email_spam_pipeline.pkl")
+    
+    # Predict class
+    predicted_class_index = loaded_pipeline.predict([email_text])[0]
+    predicted_label = "Spam" if predicted_class_index == 1 else "Ham"
+    
+    return predicted_label
+
+
+
+example1 = "Congratulations! You’ve won a free trip. Click here to claim your prize."
+example2 = "Hi John, just wanted to check if we’re still on for the meeting tomorrow."
+
+print(classify_email_with_svm(example1))  # Expected: Spam
+print(classify_email_with_svm(example2))  # Expected: Ham
