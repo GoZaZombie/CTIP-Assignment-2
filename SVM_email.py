@@ -34,8 +34,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 pipeline = Pipeline([
     ("tfidf", TfidfVectorizer(
         stop_words="english",
-        max_features=20000,   # allow bigger vocab for emails
-        ngram_range=(1,2)     # use unigrams + bigrams
+        max_features=20000,   
+        ngram_range=(1,2)     
     )),
     ("classifier", LinearSVC())
 ])
@@ -63,13 +63,11 @@ print("SVM email spam pipeline saved!")
 
 
 def classify_email_with_svm(email_text: str) -> str:
-    """
-    Classifies an email as Spam or Ham using the trained SVM.
-    """
-    # Load saved pipeline (vectorizer + classifier)
+
+  
     loaded_pipeline = joblib.load("svm_email_spam_pipeline.pkl")
     
-    # Predict class
+    
     predicted_class_index = loaded_pipeline.predict([email_text])[0]
     predicted_label = "Spam" if predicted_class_index == 1 else "Ham"
     
@@ -80,5 +78,5 @@ def classify_email_with_svm(email_text: str) -> str:
 example1 = "Congratulations! You’ve won a free trip. Click here to claim your prize."
 example2 = "Hi John, just wanted to check if we’re still on for the meeting tomorrow."
 
-print(classify_email_with_svm(example1))  # Expected: Spam
-print(classify_email_with_svm(example2))  # Expected: Ham
+print(classify_email_with_svm(example1))  
+print(classify_email_with_svm(example2))  
