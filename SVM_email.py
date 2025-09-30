@@ -8,6 +8,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
 import joblib
+import sys
 
 email_dataset = pd.read_csv("email_dataset.csv", encoding="utf-8")
 
@@ -25,7 +26,7 @@ email_dataset['label_encoded'] = label_encoder.fit_transform(email_dataset['labe
 X_train, X_test, y_train, y_test = train_test_split(
     email_dataset['text'],
     email_dataset['label_encoded'],
-    test_size=0.5,
+    test_size=0.8,
     random_state=42,
     stratify=email_dataset['label_encoded']
 )
@@ -59,7 +60,7 @@ plt.show()
 
 
 joblib.dump(pipeline, "svm_email_spam_pipeline.pkl")
-print("SVM email spam pipeline saved!")
+
 
 
 def classify_email_with_svm(email_text: str) -> str:
@@ -75,8 +76,11 @@ def classify_email_with_svm(email_text: str) -> str:
 
 
 
-example1 = "Congratulations! You’ve won a free trip. Click here to claim your prize."
-example2 = "Hi John, just wanted to check if we’re still on for the meeting tomorrow."
+def main(args):
+    if len(args) > 1:
+        print(args[1]," is ", classify_email_with_svm(args[1]))
+    else:
+        print("invalid query")
 
-print(classify_email_with_svm(example1))  
-print(classify_email_with_svm(example2))  
+if __name__ == "__main__":
+    main(sys.argv)
