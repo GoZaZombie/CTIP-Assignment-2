@@ -3,9 +3,7 @@ import sys
 #___SVM_MODEL___
 def classify_email_with_svm(email_text: str) -> str:
 
-  
     loaded_pipeline = joblib.load("svm_email_spam_pipeline.pkl")
-    
     
     predicted_class_index = loaded_pipeline.predict([email_text])[0]
     predicted_label = "Spam" if predicted_class_index == 1 else "Safe"
