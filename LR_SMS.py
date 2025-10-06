@@ -3,7 +3,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
 import joblib
 
 dataset = pd.read_csv("sms_dataset.csv", encoding="latin-1")
@@ -32,6 +34,13 @@ spam_classifier.fit(X_train_vectors, y_train)
 y_predictions = spam_classifier.predict(X_test_vectors)
 print("training results:")
 print(classification_report(y_test, y_predictions, target_names=['Ham', 'Spam']))
+
+conf_matrix = confusion_matrix(y_test, y_predictions)
+sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=['Safe', 'Spam'], yticklabels=['Safe', 'Spam'])
+plt.title("Confusion Matrix - SMS Logistic Regression")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
 
 joblib.dump(spam_classifier, "logistic_regression_model.pkl")
 joblib.dump(vectorizer, "logistic_regression_vectorizer.pkl")
