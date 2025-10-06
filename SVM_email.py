@@ -12,16 +12,12 @@ import sys
 
 email_dataset = pd.read_csv("email_dataset.csv", encoding="utf-8")
 
-
 email_dataset = email_dataset[['text', 'label']]
-
 
 email_dataset['text'] = email_dataset['text'].fillna("")
 
-
 label_encoder = LabelEncoder()
 email_dataset['label_encoded'] = label_encoder.fit_transform(email_dataset['label'])
-
 
 X_train, X_test, y_train, y_test = train_test_split(
     email_dataset['text'],
@@ -30,7 +26,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42,
     stratify=email_dataset['label_encoded']
 )
-
 
 pipeline = Pipeline([
     ("tfidf", TfidfVectorizer(
@@ -41,18 +36,15 @@ pipeline = Pipeline([
     ("classifier", LinearSVC())
 ])
 
-
 pipeline.fit(X_train, y_train)
-
 
 y_predictions = pipeline.predict(X_test)
 
 print("Support Vector Machine Results (Email Spam Dataset):")
 print(classification_report(y_test, y_predictions, target_names=['Ham', 'Spam']))
 
-
 conf_matrix = confusion_matrix(y_test, y_predictions)
-sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=['Ham', 'Spam'], yticklabels=['Ham', 'Spam'])
+sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=['Safe', 'Spam'], yticklabels=['Safe', 'Spam'])
 plt.title("Confusion Matrix - Email Spam SVM")
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
