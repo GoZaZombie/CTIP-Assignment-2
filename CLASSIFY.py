@@ -9,6 +9,9 @@ NBModel = joblib.load(r"ModelTraining/NaiveBayesModel.pkl")
 NBVectorizer = joblib.load(r"ModelTraining/NaiveBayesVectorizer.pkl")
 GRUModel = load_model(r"ModelTraining/GRUModelEmail.h5")
 tokenizer = joblib.load(r"ModelTraining/tokenizer.pkl")
+NBEModel = joblib.load(r"ModelTraining/NaiveBayesModelEmail.pkl")
+NBEVectorizer = joblib.load(r"ModelTraining/NaiveBayesVectorizer2.pkl")
+
 
 #___SVM_MODEL___
 def classify_email_with_svm(email_text: str) -> str:
@@ -44,8 +47,19 @@ def Classify_SMS_NB(message: str, NBModel, NBVectorizer) -> tuple:
     confidence = probability[predicted_class]
     
     label = "Spam" if predicted_class == 1 else "Safe"
-    #confidence = (confidence * 100)
+    
     return label, confidence
+
+def Classify_SMS_NBE(message: str, NBEModel, NBEVectorizer) -> tuple:
+    message_tfidf = NBEVectorizer.transform([message])
+    
+    probability_E = NBEModel.predict_proba(message_tfidf)[0]
+    predicted_class_E = probability_E.argmax()  # 0 = Safe, 1 = Spam 
+    confidence_E = probability_E[predicted_class_E]
+    
+    label = "Spam" if predicted_class_E == 1 else "Safe"
+    
+    return label, confidence_E
 #GRU Model
 def classify_Email_GRU(message: str, GRUmodel, tokenizer, maxlen=100) -> tuple:
     sequence = tokenizer.texts_to_sequences([message])
@@ -70,6 +84,10 @@ def main(args):
             case ("NB"):#could add an option here to select SMS/Emails? if we want to
                 print ("SMS classified using Naive Bayes Classifier model:")
                 label, confidence = Classify_SMS_NB(args[2], NBModel, NBVectorizer)
+                print(f"[{args[2]}] is {label} \nConfidence(%) in this answer: {confidence:.1%}")
+            case("NBE"): 
+                print ("SMS classified using Naive Bayes Classifier model:")
+                label, confidence = Classify_SMS_NBE(args[2], NBEModel, NBEVectorizer)
                 print(f"[{args[2]}] is {label} \nConfidence(%) in this answer: {confidence:.1%}")
             case ("GRU"):
                 print ("Email classified using GRU Model:")
