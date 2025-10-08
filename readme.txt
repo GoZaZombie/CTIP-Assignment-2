@@ -2,6 +2,16 @@ Instructions for using this codebase:
 
 This repo should contain the .pkl files for each model already.
 
+Libraries needed:
+pandas
+scikit-learn 
+numpy 
+joblib 
+matplot 
+seaborn 
+tensorflow
+
+
 If they are missing, run the following program:
 
 LR_SMS.py
