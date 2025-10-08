@@ -48,7 +48,7 @@ def Classify_SMS_NB(message: str, NBModel, NBVectorizer) -> tuple:
     
     return label, confidence
 
-def Classify_SMS_NBE(message: str, NBEModel, NBEVectorizer) -> tuple:
+def Classify_EMAIL_NB(message: str, NBEModel, NBEVectorizer) -> tuple:
     message_tfidf = NBEVectorizer.transform([message])
     
     probability_E = NBEModel.predict_proba(message_tfidf)[0]
@@ -79,13 +79,13 @@ def main(args):
             case ("LR"):
                 print ("SMS message classified using Logistic Regression:")
                 print("[",args[2],"] is ", classify_sms_with_lr(args[2])[0], " Confidence(%): ",classify_sms_with_lr(args[2])[1])
-            case ("NB"):#could add an option here to select SMS/Emails? if we want to
+            case ("NBSMS"):
                 print ("SMS classified using Naive Bayes Classifier model:")
                 label, confidence = Classify_SMS_NB(args[2], NBModel, NBVectorizer)
                 print(f"[{args[2]}] is {label} \nConfidence(%) in this answer: {confidence:.1%}")
             case("NBE"): 
                 print ("SMS classified using Naive Bayes Classifier model:")
-                label, confidence = Classify_SMS_NBE(args[2], NBEModel, NBEVectorizer)
+                label, confidence = Classify_EMAIL_NB(args[2], NBEModel, NBEVectorizer)
                 print(f"[{args[2]}] is {label} \nConfidence(%) in this answer: {confidence:.1%}")
             case ("GRU"):
                 print ("Email classified using GRU Model:")

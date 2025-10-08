@@ -17,7 +17,12 @@ python CLASSIFY.py <model> <input string to query>
 
 these are the accepted inputs for <model>:
 
-LR - Logistic Regression
-SVM - Linear Vector Classifier
-NB - Naive Bayes 
-GRU - Gated Recurrent Unit
+LR - Logistic Regression (SMS)
+SVM - Linear Vector Classifier (EMAIL)
+NB - Naive Bayes(SMS)
+NBE - Naive Bayes for (EMAIL)
+GRU - Gated Recurrent Unit (EMAIL)
+
+here's an example which uses the Naive Bayes email clasification model:
+
+python CLASSIFY.py NBE "Subject: brighten those teeth  get your  teeth bright white now !  have you considered professional teeth whitening ? if so , you  know it usually costs between $ 300 and $ 500 from your local  dentist !"
