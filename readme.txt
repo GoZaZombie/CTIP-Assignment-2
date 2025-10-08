@@ -1,7 +1,5 @@
 Instructions for using this codebase:
 
-This repo should contain the .pkl files for each model already.
-
 Libraries needed:
 pandas
 scikit-learn 
@@ -11,6 +9,7 @@ matplot
 seaborn 
 tensorflow
 
+This repo should contain the .pkl files for each model already.
 
 If they are missing, run the following program:
 
