@@ -84,7 +84,7 @@ def main(args):
                 label, confidence = Classify_SMS_NB(args[2], NBModel, NBVectorizer)
                 print(f"[{args[2]}] is {label} \nConfidence(%) in this answer: {confidence:.1%}")
             case("NBE"): 
-                print ("SMS classified using Naive Bayes Classifier model:")
+                print ("Email classified using Naive Bayes Classifier model:")
                 label, confidence = Classify_EMAIL_NB(args[2], NBEModel, NBEVectorizer)
                 print(f"[{args[2]}] is {label} \nConfidence(%) in this answer: {confidence:.1%}")
             case ("GRU"):

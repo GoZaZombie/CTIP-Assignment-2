@@ -1,5 +1,14 @@
 Instructions for using this codebase:
 
+Libraries needed:
+pandas
+scikit-learn 
+numpy 
+joblib 
+matplot 
+seaborn 
+tensorflow
+
 This repo should contain the .pkl files for each model already.
 
 If they are missing, run the following program:
