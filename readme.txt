@@ -28,7 +28,7 @@ these are the accepted inputs for <model>:
 
 LR - Logistic Regression (SMS)
 SVM - Linear Vector Classifier (EMAIL)
-NB - Naive Bayes(SMS)
+NBSMS - Naive Bayes(SMS)
 NBE - Naive Bayes for (EMAIL)
 GRU - Gated Recurrent Unit (EMAIL)
 
