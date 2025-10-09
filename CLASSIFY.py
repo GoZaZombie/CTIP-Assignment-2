@@ -13,6 +13,14 @@ NBEModel = joblib.load(r"ModelTraining/NaiveBayesModelEmail.pkl")
 NBEVectorizer = joblib.load(r"ModelTraining/NaiveBayesVectorizer2.pkl")
 
 
+
+Model_function_dic = {
+    "NBE" : Classify_EMAIL_NB,
+    "NBSMS" : Classify_SMS_NB, 
+    "GRU" : classify_Email_GRU, 
+    "SVM" : classify_email_with_svm,
+    "LR" : classify_sms_with_lr
+}
 #___SVM_MODEL___
 def classify_email_with_svm(email_text: str) -> str:
 
