@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 
 from pydantic import BaseModel
-import CLASSIFY
+from CLASSIFY import Classify_SMS_NB
+from CLASSIFY import Classify_EMAIL_NB
+from CLASSIFY import run_model_classification
 
 #Variable app is created and assigned the FastAPI function (we can change the app name, but remember to change commands like @app.post to the new name)
 app = FastAPI()
@@ -13,9 +15,12 @@ class UserInput(BaseModel):
     Message: str
     
 
+
+
 #Creates an API endpoint allowing for interaction when the api is "started" (python -m uvicorn TestAPI:app --reload)
-@app.post("/CLASSIFY")
-def Classify_SMS_NB(input_data: UserInput):
-    result = Classify_SMS_NB(input_data.Message)
-    return {"prediction": result}
-    
+@app.post("/CLASSIFY/Detection")
+def API_CALL(input_data: UserInput):
+    result = run_model_classification(input_data.Message,input_data.ModelChoice )
+    print(f"Gets to the Return function")
+    return {"Prediction": result}
+
