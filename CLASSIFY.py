@@ -86,7 +86,7 @@ def run_model_classification(message: str, ModelSelection) -> tuple:
 
         Selected_function = Model_function_dic[ModelSelection]
 
-        return Selected_function(message)
+        return Selected_function(message)[0], Selected_function(message)[1] if len(Selected_function(message)) > 1 else None
     else: 
         print(f"Invalid Model Selection")
         return 0 
