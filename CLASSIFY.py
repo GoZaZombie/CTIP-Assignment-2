@@ -13,6 +13,8 @@ NBEModel = joblib.load(r"ModelTraining/NaiveBayesModelEmail.pkl")
 NBEVectorizer = joblib.load(r"ModelTraining/NaiveBayesVectorizer2.pkl")
 
 
+
+
 #___SVM_MODEL___
 def classify_email_with_svm(email_text: str) -> str:
 
@@ -37,7 +39,7 @@ def classify_sms_with_lr(message: str) -> str:
     label = "Spam" if predicted_class == 1 else "Safe"
     return label, confidence
 # Naive Bayes Model SMS
-def Classify_SMS_NB(message: str, NBModel, NBVectorizer) -> tuple:
+def Classify_SMS_NB(message: str) -> str:
     message_tfidf = NBVectorizer.transform([message])
     
     probability = NBModel.predict_proba(message_tfidf)[0]
@@ -48,7 +50,7 @@ def Classify_SMS_NB(message: str, NBModel, NBVectorizer) -> tuple:
     
     return label, confidence
 
-def Classify_EMAIL_NB(message: str, NBEModel, NBEVectorizer) -> tuple:
+def Classify_EMAIL_NB(message: str) -> str:
     message_tfidf = NBEVectorizer.transform([message])
     
     probability_E = NBEModel.predict_proba(message_tfidf)[0]
@@ -59,16 +61,36 @@ def Classify_EMAIL_NB(message: str, NBEModel, NBEVectorizer) -> tuple:
     
     return label, confidence_E
 #GRU Model
-def classify_Email_GRU(message: str, GRUmodel, tokenizer, maxlen=100) -> tuple:
+def classify_Email_GRU(message: str) -> str:
+    maxlen=100
     sequence = tokenizer.texts_to_sequences([message])
     padded = pad_sequences(sequence, maxlen=maxlen, padding='post')
 
-    probability = GRUmodel.predict(padded, verbose=0)[0][0]
+    probability = GRUModel.predict(padded, verbose=0)[0][0]
     
     label = "Spam" if probability > 0.5 else "Safe"
     confidence = probability if label == "Spam" else 1 - probability
     
     return label, confidence
+
+
+def run_model_classification(message: str, ModelSelection) -> tuple: 
+    Model_function_dic = {
+    "NBE" : Classify_EMAIL_NB,
+    "NBSMS" : Classify_SMS_NB, 
+    "GRU" : classify_Email_GRU, 
+    "SVM" : classify_email_with_svm,
+    "LR" : classify_sms_with_lr
+    }
+    if ModelSelection in Model_function_dic: 
+
+        Selected_function = Model_function_dic[ModelSelection]
+
+        return Selected_function(message)
+    else: 
+        print(f"Invalid Model Selection")
+        return 0 
+
 
 def main(args):
     if len(args) > 2:
@@ -81,15 +103,15 @@ def main(args):
                 print("[",args[2],"] is ", classify_sms_with_lr(args[2])[0], " Confidence(%): ",classify_sms_with_lr(args[2])[1])
             case ("NBSMS"):
                 print ("SMS classified using Naive Bayes Classifier model:")
-                label, confidence = Classify_SMS_NB(args[2], NBModel, NBVectorizer)
+                label, confidence = Classify_SMS_NB(args[2])
                 print(f"[{args[2]}] is {label} \nConfidence(%) in this answer: {confidence:.1%}")
             case("NBE"): 
                 print ("Email classified using Naive Bayes Classifier model:")
-                label, confidence = Classify_EMAIL_NB(args[2], NBEModel, NBEVectorizer)
+                label, confidence = Classify_EMAIL_NB(args[2])
                 print(f"[{args[2]}] is {label} \nConfidence(%) in this answer: {confidence:.1%}")
             case ("GRU"):
-                print ("Email classified using GRU Model:")
-                label, confidence = classify_Email_GRU(args[2], GRUModel, tokenizer)
+                print ("Email classified using GRU Model:") 
+                label, confidence = classify_Email_GRU(args[2])
                 print(f"[{args[2]}] is {label} \nConfidence(%) in this answer: {confidence:.1%}") #can remove confidence values, just added them since both models give a score between 0-1
             case _:
                 return "invalid model option"
