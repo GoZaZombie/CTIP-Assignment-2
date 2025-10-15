@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const modelChoice = ref('ModelA')
+const modelChoice = ref('LR')
 const message = ref('')
 const predictionLabel = ref('')
 const confidence = ref(null)
@@ -58,7 +58,7 @@ async function submitForm() {
 
     <div v-if="predictionLabel">
       Prediction: {{ predictionLabel }}
-      <span v-if="confidence !== null"> (Confidence: {{ confidence }})</span>
+      <span v-if="confidence !== null"> (Confidence: {{ confidence.toFixed(2) }})</span>
     </div>
 
     <div v-if="error">Error: {{ error }}</div>
