@@ -6,6 +6,7 @@ const message = ref('')
 const predictionLabel = ref('')
 const confidence = ref(null)
 const error = ref('')
+const resultColor = ref('orange')
 
 const modelOptions = ['LR', 'NBE', 'NBSMS', 'SVM', 'GRU']
 
@@ -36,6 +37,13 @@ async function submitForm() {
     } else {
       predictionLabel.value = pred
     }
+    if(pred[0] === 'Spam'){
+        resultColor.value = 'red'
+      } else if (pred[0] === 'Safe'){
+        resultColor.value = 'green'
+      } else {
+        resultColor.value = 'white'
+      }
   } catch (err) {
     error.value = err.message
   }
@@ -44,10 +52,16 @@ async function submitForm() {
 
 <template>
   <h1>Spam Checker</h1>
-  <div v-if="predictionLabel">
-      Prediction: {{ predictionLabel }}
-      <span v-if="confidence !== null"> (Confidence: {{ confidence.toFixed(2) }})</span>
+  <Transition name="fade">
+  <div v-if="predictionLabel" class="result" :style="{ color: resultColor }">
+      <p>
+        Prediction using {{ modelChoice }} model: {{ predictionLabel }} <br></br>
+        <span v-if="confidence !== null"> (Confidence: {{ confidence.toFixed(2) }})</span>
+
+      </p>
+      
   </div>
+  </Transition>
   <div v-if="error">Error: {{ error }}</div>
  
 

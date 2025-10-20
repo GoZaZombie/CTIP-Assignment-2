@@ -15,6 +15,12 @@ body {
   background-color: dimgray;
   font-family: sanshegarty; 
 }
+h1{
+    font-size: 48px;
+    color: white;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
 .input-row{
     position: absolute;
     bottom: 5%;
@@ -31,19 +37,25 @@ body {
     padding-left: 0px;
 }
 .input-row textarea{
+    font-family: Arial, Helvetica, sans-serif;
     background-color: gray;
-    font-size: 18px;
+    font-size: 24px;
     color: white;
     width: 60%;
     height: 97%;
     padding-top: 0%;
     appearance: none;    
+    
+}
+::placeholder {
+  color: white;
 }
 .input-row textarea:hover{
     background-color: darkgray;
     transition: background-color 0.1s ease;
 }
 .input-row select{
+    text-align: center;
     font-size: 30px;
     background-color: black;
     color: white;
@@ -57,6 +69,10 @@ body {
     background-color: gray;
     transition: background-color 0.3s ease;
 }
+.input-row button:hover{
+    background-color: gray;
+    transition: background-color 0.3s ease;
+}
 .input-row button{
     font-size: 30px;
     background-color: black;
@@ -66,4 +82,30 @@ body {
     border-radius: 0px 10px 10px 0px;
     padding: 10px;
     appearance: none;
+}
+.result{
+    position: absolute;
+    background-color: rgb(61, 61, 61);
+    bottom: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 300px;
+    display:flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items: center;
+    border-radius: 25px;
+    font-size: 36px;
+    border-color: white;
+    border-width: 5px;
+    border-style: solid;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
