@@ -43,24 +43,34 @@ async function submitForm() {
 </script>
 
 <template>
-  <div>
-    <form @submit.prevent="submitForm">
-      <select v-model="modelChoice">
+  <h1>Spam Checker</h1>
+  <div v-if="predictionLabel">
+      Prediction: {{ predictionLabel }}
+      <span v-if="confidence !== null"> (Confidence: {{ confidence.toFixed(2) }})</span>
+  </div>
+  <div v-if="error">Error: {{ error }}</div>
+ 
+
+    <form @submit.prevent="submitForm" class="input-row">
+
+      <select v-model="modelChoice" >
         <option v-for="option in modelOptions" :key="option" :value="option">
           {{ option }}
         </option>
       </select>
 
-      <input v-model="message" type="text" placeholder="Enter message" />
+ 
+      <textarea v-model="message" placeholder="Enter message" ></textarea>
 
-      <button type="submit">Submit</button>
+
+      <button type="submit" >Check!</button>
+
     </form>
 
-    <div v-if="predictionLabel">
-      Prediction: {{ predictionLabel }}
-      <span v-if="confidence !== null"> (Confidence: {{ confidence.toFixed(2) }})</span>
-    </div>
+    
 
-    <div v-if="error">Error: {{ error }}</div>
-  </div>
+    
+  
+
 </template>
+

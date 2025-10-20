@@ -1,0 +1,69 @@
+@font-face {
+  font-family: sanshegarty; 
+  src: url('BBHSansHegarty-Regular.ttf');
+}
+html, body {
+  font-family: sanshegarty; 
+}
+*,
+*::before,
+*::after {
+  font-family: inherit;
+}
+body {
+  text-align: center;
+  background-color: dimgray;
+  font-family: sanshegarty; 
+}
+.input-row{
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    margin: auto;
+    height: 100px;
+    display:flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items: center;
+    border: none;
+    padding-left: 0px;
+}
+.input-row textarea{
+    background-color: gray;
+    font-size: 18px;
+    color: white;
+    width: 60%;
+    height: 97%;
+    padding-top: 0%;
+    appearance: none;    
+}
+.input-row textarea:hover{
+    background-color: darkgray;
+    transition: background-color 0.1s ease;
+}
+.input-row select{
+    font-size: 30px;
+    background-color: black;
+    color: white;
+    height: 100%;
+    width: 20%;
+    border-radius: 10px 0px 0px 10px;
+    padding: 10px;
+    appearance: none;
+}
+.input-row select:hover{
+    background-color: gray;
+    transition: background-color 0.3s ease;
+}
+.input-row button{
+    font-size: 30px;
+    background-color: black;
+    color: white;
+    height: 100%;
+    width: 20%;
+    border-radius: 0px 10px 10px 0px;
+    padding: 10px;
+    appearance: none;
+}
