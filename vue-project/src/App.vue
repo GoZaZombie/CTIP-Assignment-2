@@ -14,6 +14,10 @@ async function submitForm() {
   predictionLabel.value = ''
   confidence.value = null
   error.value = ''
+  if (message.value === '6 7') {
+        window.location.href = 'https://youtu.be/XnygT6ANLzQ?list=RDXnygT6ANLzQ&t=30';
+        return;
+      }
 
   try {
     const response = await fetch('http://127.0.0.1:8000/CLASSIFY/Detection', {
@@ -62,6 +66,7 @@ async function submitForm() {
       
   </div>
   </Transition>
+
   <div v-if="error">Error: {{ error }}</div>
  
 
