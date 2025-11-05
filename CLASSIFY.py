@@ -74,23 +74,29 @@ def classify_Email_GRU(message: str) -> str:
     return label, confidence
 
 
-def run_model_classification(message: str, ModelSelection) -> tuple: 
+def run_model_classification(message: str, ModelSelection: str) -> tuple: 
     Model_function_dic = {
-    "NBE" : Classify_EMAIL_NB,
-    "NBSMS" : Classify_SMS_NB, 
-    "GRU" : classify_Email_GRU, 
-    "SVM" : classify_email_with_svm,
-    "LR" : classify_sms_with_lr
+        "NBE": Classify_EMAIL_NB,
+        "NBSMS": Classify_SMS_NB, 
+        "GRU": classify_Email_GRU, 
+        "SVM": classify_email_with_svm,
+        "LR": classify_sms_with_lr
     }
-    if ModelSelection in Model_function_dic: 
-
-        Selected_function = Model_function_dic[ModelSelection]
-
-        return Selected_function(message)[0], Selected_function(message)[1] if len(Selected_function(message)) > 1 else None
-    else: 
-        print(f"Invalid Model Selection")
-        return 0 
-
+    
+    if ModelSelection not in Model_function_dic: 
+        print(f"Invalid Model Selection: {ModelSelection}")
+        return None, None  # Return consistent tuple instead of 0
+    
+    Selected_function = Model_function_dic[ModelSelection]
+    result = Selected_function(message)  # Call ONCE and store
+    
+    # Handle different return types
+    if isinstance(result, tuple) and len(result) == 2:
+        return result  # (label, confidence)
+    elif isinstance(result, str):
+        return result, None  # Just label, no confidence
+    else:
+        return None, None
 
 def main(args):
     if len(args) > 2:

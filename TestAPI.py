@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from CLASSIFY import Classify_SMS_NB
-from CLASSIFY import Classify_EMAIL_NB
 from CLASSIFY import run_model_classification
 app = FastAPI()
 
