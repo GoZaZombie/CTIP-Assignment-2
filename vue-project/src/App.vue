@@ -18,7 +18,7 @@ async function submitForm() {
         window.location.href = 'https://youtu.be/XnygT6ANLzQ?list=RDXnygT6ANLzQ&t=30';
         return;
       }
-
+    
   try {
     const response = await fetch('http://127.0.0.1:8000/CLASSIFY/Detection', {
       method: 'POST',
@@ -30,24 +30,26 @@ async function submitForm() {
     })
 
     if (!response.ok) throw new Error('Request failed')
-
+    
     const data = await response.json()
-    const pred = data.Prediction
-
-    // Handle both cases: with or without confidence
-    if (Array.isArray(pred)) {
-      predictionLabel.value = pred[0] || ''
-      confidence.value = pred[1] !== undefined ? pred[1] : null
-    } else {
-      predictionLabel.value = pred
+    //const pred = data.Prediction //commented this out too since idk i forgot to just change the existing code
+    const label = data.Prediction;
+    const conf = data.Confidence;
+ 
+    console.log('API data:', data);
+    predictionLabel.value = label || '';
+    confidence.value = conf !== undefined && conf !== null ? conf.toFixed(2) : '';
+    if (label === 'Spam'){ // now this handles just the spam string rather than the array 
+      resultColor.value = 'red';
     }
-    if(pred[0] === 'Spam'){
-        resultColor.value = 'red'
-      } else if (pred[0] === 'Safe'){
-        resultColor.value = 'green'
-      } else {
-        resultColor.value = 'white'
-      }
+    else if (label === 'Safe') {
+      resultColor.value = 'green';
+      
+    }
+    else {
+        resultColor.value = 'white' 
+    }
+      
   } catch (err) {
     error.value = err.message
   }
@@ -60,7 +62,7 @@ async function submitForm() {
   <div v-if="predictionLabel" class="result" :style="{ color: resultColor }">
       <p>
         Prediction using {{ modelChoice }} model: {{ predictionLabel }} <br></br>
-        <span v-if="confidence !== null"> (Confidence: {{ confidence.toFixed(2) }})</span>
+        <span v-if="confidence"> (Confidence: {{ confidence }})</span>
 
       </p>
       

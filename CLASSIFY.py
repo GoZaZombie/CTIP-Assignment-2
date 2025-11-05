@@ -10,25 +10,27 @@ NBVectorizer = joblib.load(r"ModelTraining/NaiveBayesVectorizer.pkl")
 GRUModel = load_model(r"ModelTraining/GRUModelEmail.h5")
 tokenizer = joblib.load(r"ModelTraining/tokenizer.pkl")
 NBEModel = joblib.load(r"ModelTraining/NaiveBayesModelEmail.pkl")
-NBEVectorizer = joblib.load(r"ModelTraining/NaiveBayesVectorizer2.pkl")
-
-
+NBEVectorizer = joblib.load(r"ModelTraining/NaiveBayesVectorizer2.pkl") #calling all these once here, rather than calling it in each function, hoping it makes it run faster
+loaded_pipeline = joblib.load("svm_email_spam_pipeline.pkl")
+model = joblib.load("logistic_regression_model.pkl")
+vectorizer = joblib.load("logistic_regression_vectorizer.pkl")
 
 
 #___SVM_MODEL___
 def classify_email_with_svm(email_text: str) -> str:
 
-    loaded_pipeline = joblib.load("svm_email_spam_pipeline.pkl")
+   
     
     predicted_class_index = loaded_pipeline.predict([email_text])[0]
     predicted_label = "Spam" if predicted_class_index == 1 else "Safe"
-    
-    return predicted_label
+   
+    return predicted_label, None
+
+
 #___LOGISTIC_REGRESSION_MODEL___
 def classify_sms_with_lr(message: str) -> str:
 
-    model = joblib.load("logistic_regression_model.pkl")
-    vectorizer = joblib.load("logistic_regression_vectorizer.pkl")
+
     
     message_tfidf = vectorizer.transform([message])
     
@@ -88,7 +90,7 @@ def run_model_classification(message: str, ModelSelection: str) -> tuple:
         return None, None  # Return consistent tuple instead of 0
     
     Selected_function = Model_function_dic[ModelSelection]
-    result = Selected_function(message)  # Call ONCE and store
+    result = Selected_function(message)  # Calls  ONCE and store (in theory reduce compute/improve performance, idk if it will though)
     
     # Handle different return types
     if isinstance(result, tuple) and len(result) == 2:

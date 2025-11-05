@@ -5,15 +5,15 @@ from CLASSIFY import run_model_classification
 app = FastAPI()
 
 
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],          # You can use ["*"] for testing
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # Specific origins (this can be changed back just playing with it to test why it isn't working for gru)
     allow_credentials=True,
-    allow_methods=["*"],            # Allow GET, POST, OPTIONS, etc.
-    allow_headers=["*"],            # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"]
 )
-
-
 
 
 #creates a class, that expects a model choice (NBE,NBSMS, GRU etc) and then the users message. 
@@ -27,7 +27,18 @@ class UserInput(BaseModel):
 #Creates an API endpoint allowing for interaction when the api is "started" (python -m uvicorn TestAPI:app --reload)
 @app.post("/CLASSIFY/Detection")
 def API_CALL(input_data: UserInput):
-    result = run_model_classification(input_data.Message,input_data.ModelChoice )
-    print(f"Gets to the Return function")
-    return {"Prediction": result}
+    try: 
+        result = run_model_classification(input_data.Message,input_data.ModelChoice )
+        print(f"Gets to the Return function")
+        label, confidence = result  # e.g label = "Spam", confidence = 0.95 The errors with GRU and SVM were with the fact it wasn't able to read the array correctly, so i have split the tuple
+    
+        return {
+            "Prediction": str(label),      # e.g "Spam" / "Safe" 
+            "Confidence": float(confidence) if confidence is not None else None # e.g 0.95 and checks if the return value is NONE (as SVM returns none, instead of a confidence)
+        }
+    except Exception as e : #exception handling and debugging, keep it here encase it breaks before we hand it in, it makes it easier to debug
+        import traceback
+        print(f"Error in API_CALL: {e}") #fully ripped this error handling from stackoverflow, but it works
+        print(traceback.format_exc())
+        return {"error": str(e)}
 
