@@ -1,18 +1,39 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
-
+import { reactive } from "vue";
 const modelChoice = ref('LR')
 const message = ref('')
 const predictionLabel = ref('')
-const confidence = ref(null)
+const confidence = ref<number | null>(null)
 const error = ref('')
 const resultColor = ref('orange')
 
 const modelOptions = ['LR', 'NBE', 'NBSMS', 'SVM', 'GRU']
-
+interface Result {
+  id: number;
+  type: string;
+  message: string;
+  model: string;
+  prediction: string;
+  confidence: number | null;
+  onClick: () => void;   // function each element can run
+}
+const results = reactive<Result[]>([]);
+function addResult(type: string, message: string, model: string, prediction: string, confidence: number | null)  {
+  results.push({
+    id: Date.now(),
+    type,
+    message,
+    model,
+    prediction,
+    confidence,
+    onClick: () => {
+      alert(`You clicked: ${type}`);
+    }
+  });
+}
 async function submitForm() {
   predictionLabel.value = ''
-  confidence.value = null
   error.value = ''
   if (message.value === '6 7') {
         window.location.href = 'https://youtu.be/XnygT6ANLzQ?list=RDXnygT6ANLzQ&t=30';
@@ -48,24 +69,32 @@ async function submitForm() {
       } else {
         resultColor.value = 'white'
       }
-  } catch (err) {
-    error.value = err.message
+  } catch (err: unknown) {
+    error.value = err instanceof Error ? err.message : 'An unknown error occurred'
   }
+  addResult("not done yet", message.value, modelChoice.value, predictionLabel.value, confidence.value);
 }
 </script>
 
 <template>
   <h1>Spam Checker</h1>
-  <Transition name="fade">
-  <div v-if="predictionLabel" class="result" :style="{ color: resultColor }">
-      <p>
-        Prediction using {{ modelChoice }} model: {{ predictionLabel }} <br></br>
-        <span v-if="confidence !== null"> (Confidence: {{ confidence.toFixed(2) }})</span>
-
-      </p>
-      
+  <div class="results-container">
+  <div v-for="result in results" :key="result.id" class="result" 
+    :class="{
+      spam: result.prediction === 'Spam',
+      safe: result.prediction === 'Safe'
+    }">
+    <p class="message">
+      <img src="@/assets/email.png" alt="email icon" width="50">
+      {{ result.message }}
+    </p>
+    <p class="metrics">
+      Prediction using {{ result.model }} model: {{ result.prediction }} <br />
+      <span v-if="result.confidence !== null"> (Confidence: {{ result.confidence.toFixed(2) }})</span>
+    </p>
   </div>
-  </Transition>
+  </div>
+
 
   <div v-if="error">Error: {{ error }}</div>
  
