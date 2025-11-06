@@ -95,7 +95,8 @@ async function submitForm() {
     :class="{
       spam: result.prediction === 'Spam',
       safe: result.prediction === 'Safe'
-    }">
+    }" >
+    <div class="result-content">
     <p class="message">
       <img :src="result.type === 'email' ? emailIcon : smsIcon" 
            alt="icon" 
@@ -113,19 +114,19 @@ async function submitForm() {
       }">
       </div>
       </div>
-       
-
-    </div>
     <button @click="result.isExpanded = !result.isExpanded">
     {{ result.isExpanded ? 'Show Less' : 'Show More' }}
-    </button>
+    </button>  
+    </div>
     <div v-if="result.isExpanded" class="detailed-results">
-      Detailed Model Results:
       <div v-for="(modelResult, modelName) in result.modelresults" :key="modelName" class="model-result">
-        <h4>{{ modelName }}</h4>
-        <p>Label: {{ modelResult.label }}</p>
+        {{ modelName }}:
+        {{ modelResult.label }}
         <p v-if="modelResult.confidence != null">Confidence: {{ (modelResult.confidence * 100).toFixed(2) }}%</p>
       </div>
+    </div>
+    
+    
     </div>
   </div>
   </div>

@@ -103,7 +103,7 @@ h1{
     left: 5%;
     bottom: 25%;
     width: 90%;
-    height: 300px;
+    min-height: 24vh;
     display:flex;
     flex-direction: row;
     align-items: center;
@@ -117,6 +117,13 @@ h1{
   background-clip: padding-box, border-box;
   background-origin: border-box;
 }
+.result-content {
+    height: 24vh; /* Fixed height for main content */
+    display: flex;
+    flex-direction: row; /* Your original row layout */
+    align-items: center;
+    width: 100%;
+}
 .message{
   flex-direction: column;
   position: relative;
@@ -127,8 +134,6 @@ h1{
   background-color: rgb(41, 41, 41);
   border-radius: 20px;
   overflow-y: auto;
-
-
 }
 
 .spam {
@@ -168,10 +173,27 @@ h1{
   position: relative;
   font-size: 24px;
   left: 2vh;
-
   text-align: left;
   width: 55%;
+  height: 100%;
+  padding-top: 10vh;
 
+
+}
+.metrics button{
+  position: absolute;
+  left: 5px;
+  top: 24vh;
+  font-size: 18px;
+  color: white;
+  appearance: none;
+  border-radius: 10px;
+  background-color: transparent;
+  border: none;
+}
+.metrics button:hover{
+    text-decoration: underline;
+    transition: text-decoration 0.3s ease;
 }
 
 .bar {
@@ -179,7 +201,7 @@ h1{
   background-color: #555;
   border-radius: 10px;
   width: 80%;
-  height: 25px;
+  height: 2.5vh;
 
   overflow: hidden;
 }
@@ -198,7 +220,29 @@ h1{
   from { width: 0; }
   to { width: var(--final-width); }
 }
+/* Transition classes */
+.expand-enter-active,
+.expand-leave-active {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
 
+.expand-enter-from,
+.expand-leave-to {
+  max-height: 40vh;
+  opacity: 0;
+}
+
+.expand-enter-to,
+.expand-leave-from {
+  max-height: 500px; 
+  opacity: 1;
+}
+.detailed-results {
+  font-size: 16px;
+  text-align: left;
+
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
