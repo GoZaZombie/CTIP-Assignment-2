@@ -118,7 +118,7 @@ async function submitForm() {
     <p class="message">
       <img :src="result.type === 'email' ? emailIcon : smsIcon" 
            alt="icon" 
-           width="50" />
+           class="icon" />
       {{ result.message }}<br />
     </p>
     <div class="metrics">

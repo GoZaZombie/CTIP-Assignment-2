@@ -89,6 +89,7 @@ h1{
   height: 40vh;
   padding-top: 30vh;
   overflow-y: auto;
+  overflow-x: hidden;
   align-content: center;
 
 }
@@ -100,7 +101,7 @@ h1{
     left: 5%;
     bottom: 25%;
     width: 90%;
-    min-height: 24vh;
+    min-height: 24vmin;
     display:flex;
     align-items: center;
     border-radius: 2vmin;
@@ -115,14 +116,15 @@ h1{
   transition: min-height 0.3s ease;
 }
 .result-content {
-    height: 24vh;
-    min-height: 24vh; 
+    height: 24vmin;
+    min-height: 24vmin; 
     display: flex;
     flex-direction: row; 
     align-items: center;
     width: 100%;
 }
 .message{
+  font-size: 2vmin;
   flex-direction: row;
   position: relative;
   width: 40%;
@@ -132,6 +134,10 @@ h1{
   background-color: rgb(41, 41, 41);
   border-radius: 2vmin;
   overflow-y: auto;
+}
+.icon{
+  width: 4vmin;
+  height: 4vmin;
 }
 
 .spam {
@@ -174,14 +180,14 @@ h1{
   text-align: left;
   width: 55%;
   height: 100%;
-  padding-top: 10vh;
+  padding-top: 10vmin;
 
 
 }
 .metrics button{
   position: absolute;
   left: 0.5vmin;
-  top: 24vh;
+  top: 24vmin;
   font-size: 1.8vmin;
   color: white;
   appearance: none;
@@ -199,8 +205,7 @@ h1{
   background-color: #555;
   border-radius: 1vmin;
   width: 80%;
-  height: 2.5vh;
-
+  height: 2.5vmin;
   overflow: hidden;
 }
 .bar_fill {
@@ -275,7 +280,7 @@ h1{
   background-color: #ffffff;
 }
 .pie {
-  width: 18vmin;
+  width: 12vmin;
   aspect-ratio: 1;
   border-radius: 50%;
   background: conic-gradient(
