@@ -7,12 +7,14 @@ const predictionLabel = ref('')
 const confidence = ref(null)
 const error = ref('')
 const resultColor = ref('orange')
+const multiResults = ref(null)
 
-const modelOptions = ['LR', 'NBE', 'NBSMS', 'SVM', 'GRU']
+const modelOptions = ['LR', 'NBE', 'NBSMS', 'SVM', 'GRU', 'ALLE', 'ALLSMS']
 
 async function submitForm() {
   predictionLabel.value = ''
   confidence.value = null
+  multiResults.value = null
   error.value = ''
   if (message.value === '6 7') {
         window.location.href = 'https://youtu.be/XnygT6ANLzQ?list=RDXnygT6ANLzQ&t=30';
@@ -32,23 +34,34 @@ async function submitForm() {
     if (!response.ok) throw new Error('Request failed')
     
     const data = await response.json()
-    //const pred = data.Prediction //commented this out too since idk i forgot to just change the existing code
-    const label = data.Prediction;
-    const conf = data.Confidence;
- 
-    console.log('API data:', data);
-    predictionLabel.value = label || '';
-    confidence.value = conf !== undefined && conf !== null ? conf.toFixed(2) : '';
-    if (label === 'Spam'){ // now this handles just the spam string rather than the array 
-      resultColor.value = 'red';
+    
+    if(data.type === 'multiple'){ //a new added tag was added to the results from the classify doc, that indicate if its handling multiple models or a single one, this checks 
+      multiResults.value = data.results
+      predictionLabel.value = 'Multiple Models'
+      resultColor.value = 'blue' //Change this if you want, this was just for testing 
     }
-    else if (label === 'Safe') {
-      resultColor.value = 'green';
-      
+    else if (data.type === 'single'){
+      const label = data.Prediction;
+      const conf = data.Confidence;
+  
+      console.log('API data:', data);
+      predictionLabel.value = label || '';
+      confidence.value = conf !== undefined && conf !== null ? conf.toFixed(2) : '';
+      if (label === 'Spam'){ // now this handles just the spam string rather than the array 
+        resultColor.value = 'red';
+      }
+      else if (label === 'Safe') {
+        resultColor.value = 'green';
+        
+      }
+      else {
+          resultColor.value = 'white' 
+      }
     }
-    else {
-        resultColor.value = 'white' 
+    else if (data.error) {
+      error.value = data.error
     }
+   
       
   } catch (err) {
     error.value = err.message

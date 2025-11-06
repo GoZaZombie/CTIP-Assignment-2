@@ -74,7 +74,24 @@ def classify_Email_GRU(message: str) -> str:
     confidence = probability if label == "Spam" else 1 - probability
     
     return label, confidence
+def All_Email(Message):
+    ResultGRU = classify_Email_GRU(Message)
+    ResultSVM = classify_email_with_svm(Message)
+    ResultNB = Classify_EMAIL_NB(Message)
 
+    return { #returns as dictionary 
+        "GRU": {"label": ResultGRU[0], "confidence": ResultGRU[1]},
+        "SVM": {"label": ResultSVM[0], "confidence": ResultSVM[1]},
+        "NBE": {"label": ResultNB[0], "confidence": ResultNB[1]}
+    }
+def All_SMS(Message):
+    ResultNBSMS = Classify_SMS_NB(Message)
+    ResultLR = classify_sms_with_lr(Message)
+
+    return {
+        "NBSMS": {"label": ResultNBSMS[0], "confidence": ResultNBSMS[1]},
+        "LR": {"label": ResultLR[0], "confidence": ResultLR[1]}
+    }
 
 def run_model_classification(message: str, ModelSelection: str) -> tuple: 
     Model_function_dic = {
@@ -82,7 +99,9 @@ def run_model_classification(message: str, ModelSelection: str) -> tuple:
         "NBSMS": Classify_SMS_NB, 
         "GRU": classify_Email_GRU, 
         "SVM": classify_email_with_svm,
-        "LR": classify_sms_with_lr
+        "LR": classify_sms_with_lr,
+        "ALLE" : All_Email,
+        "ALLSMS": All_SMS
     }
     
     if ModelSelection not in Model_function_dic: 
@@ -91,14 +110,8 @@ def run_model_classification(message: str, ModelSelection: str) -> tuple:
     
     Selected_function = Model_function_dic[ModelSelection]
     result = Selected_function(message)  # Calls  ONCE and store (in theory reduce compute/improve performance, idk if it will though)
-    
-    # Handle different return types
-    if isinstance(result, tuple) and len(result) == 2:
-        return result  # (label, confidence)
-    elif isinstance(result, str):
-        return result, None  # Just label, no confidence
-    else:
-        return None, None
+
+    return result #i moved the result handling back to the API call to handle, this now just returns a result "as-is"
 
 def main(args):
     if len(args) > 2:
