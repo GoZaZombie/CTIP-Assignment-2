@@ -73,7 +73,7 @@ def classify_Email_GRU(message: str) -> str:
     label = "Spam" if probability > 0.5 else "Safe"
     confidence = probability if label == "Spam" else 1 - probability
     
-    return label, confidence
+    return str(label), float(confidence)
 def All_Email(Message):
     ResultGRU = classify_Email_GRU(Message)
     ResultSVM = classify_email_with_svm(Message)
@@ -81,7 +81,7 @@ def All_Email(Message):
 
     return { #returns as dictionary 
         "GRU": {"label": ResultGRU[0], "confidence": ResultGRU[1]},
-        "SVM": {"label": ResultSVM[0], "confidence": ResultSVM[1]},
+        "SVM": {"label": ResultSVM[0], "confidence": ResultSVM[1] if ResultSVM[1] is not None else None},
         "NBE": {"label": ResultNB[0], "confidence": ResultNB[1]}
     }
 def All_SMS(Message):
