@@ -96,6 +96,7 @@ async function submitForm() {
       spam: result.prediction === 'Spam',
       safe: result.prediction === 'Safe'
     }" >
+
     <div class="result-content">
     <p class="message">
       <img :src="result.type === 'email' ? emailIcon : smsIcon" 
@@ -118,16 +119,28 @@ async function submitForm() {
     {{ result.isExpanded ? 'Show Less' : 'Show More' }}
     </button>  
     </div>
+    </div>
+
+    <Transition name="expand">
     <div v-if="result.isExpanded" class="detailed-results">
       <div v-for="(modelResult, modelName) in result.modelresults" :key="modelName" class="model-result">
         {{ modelName }}:
         {{ modelResult.label }}
-        <p v-if="modelResult.confidence != null">Confidence: {{ (modelResult.confidence * 100).toFixed(2) }}%</p>
+        <div v-if="modelResult.confidence != null" class="pie":style="{ 
+    '--percentage': (modelResult.confidence * 100).toFixed(0),
+    '--end-percentage': (modelResult.confidence * 100).toFixed(0),
+    '--fill-color': modelResult.label === 'Spam' ? 'red' : 'green',
+    '--back-color': modelResult.label === 'Spam' ? 'black' : 'black',
+    fontSize: '30px'
+
+  }">
+          {{ (modelResult.confidence * 100).toFixed(0) }}%
+        </div>
       </div>
     </div>
+    </Transition>
     
-    
-    </div>
+
   </div>
   </div>
 

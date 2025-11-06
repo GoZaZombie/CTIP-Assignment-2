@@ -97,7 +97,7 @@ h1{
 }
 .result{
     font-family: Arial, Helvetica, sans-serif;
-    flex-direction: row;
+    flex-direction: column;
     background-color: rgb(61, 61, 61);
     position: relative;
     left: 5%;
@@ -105,7 +105,6 @@ h1{
     width: 90%;
     min-height: 24vh;
     display:flex;
-    flex-direction: row;
     align-items: center;
     border-radius: 25px;
     font-size: 36px;
@@ -116,16 +115,18 @@ h1{
     border: 8px solid transparent;
   background-clip: padding-box, border-box;
   background-origin: border-box;
+  transition: min-height 0.3s ease;
 }
 .result-content {
-    height: 24vh; /* Fixed height for main content */
+    height: 24vh;
+    min-height: 24vh; 
     display: flex;
-    flex-direction: row; /* Your original row layout */
+    flex-direction: row; 
     align-items: center;
     width: 100%;
 }
 .message{
-  flex-direction: column;
+  flex-direction: row;
   position: relative;
   width: 40%;
   height: 100%;
@@ -229,19 +230,26 @@ h1{
 
 .expand-enter-from,
 .expand-leave-to {
-  max-height: 40vh;
+  max-height: 0;
   opacity: 0;
 }
 
 .expand-enter-to,
 .expand-leave-from {
-  max-height: 500px; 
+  max-height: 40vh;
   opacity: 1;
 }
 .detailed-results {
-  font-size: 16px;
+  position: relative;
+  right: 0vh;
+  top:0;
+  font-size: 24px;
   text-align: left;
-
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  align-items: space-evenly;
+  padding: 10px;
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -263,3 +271,20 @@ h1{
 ::-webkit-scrollbar-thumb:hover {
   background-color: #ffffff;
 }
+.pie {
+  width: 8vh;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--fill-color) 0% calc(var(--percentage) * 1%), 
+    var(--back-color) calc(var(--percentage) * 1%) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+
+}
+
+
