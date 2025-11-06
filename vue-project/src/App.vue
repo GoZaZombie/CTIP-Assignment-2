@@ -148,7 +148,6 @@ async function submitForm() {
     '--end-percentage': (modelResult.confidence * 100).toFixed(0),
     '--fill-color': modelResult.label === 'Spam' ? 'red' : 'green',
     '--back-color': modelResult.label === 'Spam' ? 'black' : 'black',
-    fontSize: '30px'
 
   }">
           {{ (modelResult.confidence * 100).toFixed(0) }}%
