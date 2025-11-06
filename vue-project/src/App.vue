@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { reactive } from "vue";
 const modelChoice = ref('LR')
 const message = ref('')
@@ -35,6 +35,16 @@ function addResult(type: string, message: string, model: string, prediction: str
     }
   });
 }
+const scrollContainer = ref<HTMLElement | null>(null);
+
+const scrollToBottom = () => {
+  if (scrollContainer.value) {
+    scrollContainer.value.scrollTo({
+      top: scrollContainer.value.scrollHeight,
+      behavior: 'smooth'
+    });
+  }
+};
 async function submitForm() {
   predictionLabel.value = ''
   error.value = ''
@@ -76,13 +86,16 @@ async function submitForm() {
     error.value = err instanceof Error ? err.message : 'An unknown error occurred'
   }
   addResult("email", message.value, modelChoice.value, predictionLabel.value, confidence.value);
+  await nextTick();
+  scrollToBottom();
+
 }
 
 </script>
 
 <template>
   <h1>Spam Checker</h1>
-  <div class="results-container">
+  <div class="results-container" ref="scrollContainer">
   <div v-for="result in results" :key="result.id" class="result" 
     :class="{
       spam: result.prediction === 'Spam',
