@@ -9,7 +9,13 @@ const error = ref('')
 import emailIcon from '@/assets/email.png'
 import smsIcon from '@/assets/sms.png'
 const multiResults = ref<{ [key: string]: any } | null>(null)
-
+const modelNames: Record<string, string> = {
+  GRU: 'Gated Recurrent Unit',
+  LR: 'Logistic Regression',
+  NBSMS: 'Naive Bayes SMS',
+  SVM: 'Support Vector Machine',
+  NBE: 'Naive Bayes Email'
+};
 const modelOptions = ['email','sms']
 interface ModelResult {
   label: string;
@@ -27,7 +33,18 @@ interface Result {
   confidence?: number | null;
   isExpanded: boolean;
 }
-
+const getPieClass = (result: any) => {
+  // High confidence safe
+  if (result.label === 'Safe' && result.confidence > 0.8) {
+    return 'pie-safe-high';
+  }
+  // High confidence spam
+  if (result.label === 'Spam' && result.confidence > 0.8) {
+    return 'pie-spam-high';
+  }
+  // Low confidence spam
+  return 'pie-spam-low';
+};
 const results = reactive<Result[]>([]);
 function addResult(type: string, message: string, modelresults: { [key: string]: ModelResult }, prediction: string, confidence?: number | null) {
     results.push({
@@ -124,9 +141,9 @@ async function submitForm() {
     <Transition name="expand">
     <div v-if="result.isExpanded" class="detailed-results">
       <div v-for="(modelResult, modelName) in result.modelresults" :key="modelName" class="model-result">
-        {{ modelName }}:
+        {{ modelNames[modelName] }}:
         {{ modelResult.label }}
-        <div v-if="modelResult.confidence != null" class="pie":style="{ 
+        <div v-if="modelResult.confidence != null" class="pie" :class="getPieClass(modelResult)" :style="{ 
     '--percentage': (modelResult.confidence * 100).toFixed(0),
     '--end-percentage': (modelResult.confidence * 100).toFixed(0),
     '--fill-color': modelResult.label === 'Spam' ? 'red' : 'green',

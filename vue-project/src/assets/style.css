@@ -242,14 +242,20 @@ h1{
 .detailed-results {
   position: relative;
   right: 0vh;
-  top:0;
+  width: 100%;
   font-size: 24px;
   text-align: left;
   display: flex;
   flex-direction: row;
   align-self: flex-start;
-  align-items: space-evenly;
+  justify-content: space-evenly;
   padding: 10px;
+}
+.model-result {
+  margin-right: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -272,7 +278,7 @@ h1{
   background-color: #ffffff;
 }
 .pie {
-  width: 8vh;
+  width: 18vh;
   aspect-ratio: 1;
   border-radius: 50%;
   background: conic-gradient(
@@ -286,5 +292,18 @@ h1{
   font-size: 12px;
 
 }
+/* Hover backgrounds for different states */
+.pie-safe-high:hover {
+  background: url('@/assets/dogbutterfly.gif') center/cover;
+
+}
+
+
+.pie-spam-high:hover {
+  background: url('@/assets/dexter.gif') center/cover;
+
+}
+
+
 
 
