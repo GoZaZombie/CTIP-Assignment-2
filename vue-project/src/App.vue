@@ -1,20 +1,53 @@
-<script setup>
-import { ref } from 'vue'
-
+<script setup lang="ts">
+import { ref, nextTick } from 'vue'
+import { reactive } from "vue";
 const modelChoice = ref('LR')
 const message = ref('')
 const predictionLabel = ref('')
-const confidence = ref(null)
+const confidence = ref<number | null>(null)
 const error = ref('')
+import emailIcon from '@/assets/email.png'
+import smsIcon from '@/assets/sms.png'
 const resultColor = ref('orange')
 const multiResults = ref(null)
 
-const modelOptions = ['LR', 'NBE', 'NBSMS', 'SVM', 'GRU', 'ALLE', 'ALLSMS']
+const modelOptions = ['LR', 'NBE', 'NBSMS', 'SVM', 'GRU']
+interface Result {
+  id: number;
+  type: string;
+  message: string;
+  model: string;
+  prediction: string;
+  confidence: number | null;
+  onClick: () => void;   // function each element can run
+}
+const results = reactive<Result[]>([]);
+function addResult(type: string, message: string, model: string, prediction: string, confidence: number | null)  {
+  if(message === 'sms') {type = 'sms';};
+  results.push({
+    id: Date.now(),
+    type,
+    message,
+    model,
+    prediction,
+    confidence,
+    onClick: () => {
+      alert(`You clicked: ${type}`);
+    }
+  });
+}
+const scrollContainer = ref<HTMLElement | null>(null);
 
+const scrollToBottom = () => {
+  if (scrollContainer.value) {
+    scrollContainer.value.scrollTo({
+      top: scrollContainer.value.scrollHeight,
+      behavior: 'smooth'
+    });
+  }
+};
 async function submitForm() {
   predictionLabel.value = ''
-  confidence.value = null
-  multiResults.value = null
   error.value = ''
   if (message.value === '6 7') {
         window.location.href = 'https://youtu.be/XnygT6ANLzQ?list=RDXnygT6ANLzQ&t=30';
@@ -50,37 +83,49 @@ async function submitForm() {
       if (label === 'Spam'){ // now this handles just the spam string rather than the array 
         resultColor.value = 'red';
       }
-      else if (label === 'Safe') {
-        resultColor.value = 'green';
-        
-      }
-      else {
-          resultColor.value = 'white' 
-      }
     }
-    else if (data.error) {
-      error.value = data.error
-    }
-   
-      
-  } catch (err) {
-    error.value = err.message
+  } catch (err: unknown) {
+    error.value = err instanceof Error ? err.message : 'An unknown error occurred'
   }
+  addResult("email", message.value, modelChoice.value, predictionLabel.value, confidence.value);
+  await nextTick();
+  scrollToBottom();
+
 }
+
 </script>
 
 <template>
   <h1>Spam Checker</h1>
-  <Transition name="fade">
-  <div v-if="predictionLabel" class="result" :style="{ color: resultColor }">
-      <p>
-        Prediction using {{ modelChoice }} model: {{ predictionLabel }} <br></br>
-        <span v-if="confidence"> (Confidence: {{ confidence }})</span>
-
+  <div class="results-container" ref="scrollContainer">
+  <div v-for="result in results" :key="result.id" class="result" 
+    :class="{
+      spam: result.prediction === 'Spam',
+      safe: result.prediction === 'Safe'
+    }">
+    <p class="message">
+      <img :src="result.type === 'email' ? emailIcon : smsIcon" 
+           alt="icon" 
+           width="50" />
+      {{ result.message }}<br />
+    </p>
+    <div class="metrics">
+      <p>Prediction using {{ result.model }} model: {{ result.prediction }} <br />
+       <span v-if="result.confidence !== null"> Confidence: {{ (result.confidence*100).toFixed(0) }}%</span>
       </p>
-      
+      <div class="bar" v-if="result.confidence !== null">
+      <div class="bar_fill" :style="{ '--final-width': (result.confidence*100) + '%'}" :class="{
+      spambar: result.prediction === 'Spam',
+      safebar: result.prediction === 'Safe'
+      }">
+      </div>
+      </div>
+       
+
+    </div>
   </div>
-  </Transition>
+  </div>
+
 
   <div v-if="error">Error: {{ error }}</div>
  
