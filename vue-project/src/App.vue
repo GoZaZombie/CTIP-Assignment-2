@@ -68,6 +68,15 @@ const scrollToBottom = () => {
   }
 };
 async function submitForm() { 
+  if (!message.value.trim()) {
+    alert('Please enter a message before submitting.');
+    return;
+  }
+  
+  if (message.value.length > 300) {
+    alert('Message is too long. Please keep it under 300 characters.');
+    return;
+  }
   try {
     const response = await fetch('http://127.0.0.1:8000/CLASSIFY/Detection', {
       method: 'POST',
@@ -174,6 +183,8 @@ async function submitForm() {
 
  
       <textarea v-model="message" placeholder="Enter message" ></textarea>
+<!--add input  character length indicator-->>
+
 
 
       <button type="submit" >Check!</button>
