@@ -2,13 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from CLASSIFY import run_model_classification
+from CLASSIFY import Get_Models
+
 app = FastAPI()
 
-
-
-app.add_middleware(
+app.add_middleware( #allows fine tuning of who can call the apis, what methods are allowed etc 
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # Specific origins (this can be changed back just playing with it to test why it isn't working for gru)
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # Specific origins that are allowed to call the api. 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,7 +21,9 @@ class UserInput(BaseModel):
     ModelChoice: str
     Message: str
     
-
+@app.get("/CLASSIFY/GETModels") #returns all models used in this project using a get method
+def APIGETMODELS() -> dict :
+    return Get_Models()
 
 
 #Creates an API endpoint allowing for interaction when the api is "started" (python -m uvicorn TestAPI:app --reload)
@@ -46,7 +48,7 @@ def API_CALL(input_data: UserInput):
             }
         else: 
             return {"error": "Unexpected result format, call a programmer"}  
-    except Exception as e : #exception handling and debugging, keep it here encase it breaks before we hand it in, it makes it easier to debug
+    except Exception as e : #exception handling and debugging, keep it here if it breaks before we hand it in, it makes it easier to debug
         import traceback
         print(f"Error in API_CALL: {e}") #fully ripped this error handling from stackoverflow, but it works
         print(traceback.format_exc())

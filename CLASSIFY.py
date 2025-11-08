@@ -4,7 +4,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
-#Calling models once here  to avoid calling multiple times 
+
 NBModel = joblib.load(r"ModelTraining/NaiveBayesModel.pkl")
 NBVectorizer = joblib.load(r"ModelTraining/NaiveBayesVectorizer.pkl")
 GRUModel = load_model(r"ModelTraining/GRUModelEmail.h5")
@@ -42,31 +42,31 @@ def classify_sms_with_lr(message: str) -> str:
     return label, confidence
 # Naive Bayes Model SMS
 def Classify_SMS_NB(message: str) -> str:
-    message_tfidf = NBVectorizer.transform([message])
+    message_tfidf = NBVectorizer.transform([message]) # Transform the input message into TF-IDF feature vector
     
     probability = NBModel.predict_proba(message_tfidf)[0]
-    predicted_class = probability.argmax()
+    predicted_class = probability.argmax()  # Find which class has the highest probability (0=Safe, 1=Spam)
     confidence = probability[predicted_class]
     
-    label = "Spam" if predicted_class == 1 else "Safe"
+    label = "Spam" if predicted_class == 1 else "Safe" # Convert numeric prediction to human-readable label
     
     return label, confidence
 
 def Classify_EMAIL_NB(message: str) -> str:
-    message_tfidf = NBEVectorizer.transform([message])
+    message_tfidf = NBEVectorizer.transform([message])# Transform the input email into TF-IDF feature vector
     
-    probability_E = NBEModel.predict_proba(message_tfidf)[0]
-    predicted_class_E = probability_E.argmax()  # 0 = Safe, 1 = Spam 
+    probability_E = NBEModel.predict_proba(message_tfidf)[0]  
+    predicted_class_E = probability_E.argmax()  # 0 = Safe, 1 = Spam  # Find which class has the highest probability (0=Safe, 1=Spam)
     confidence_E = probability_E[predicted_class_E]
     
-    label = "Spam" if predicted_class_E == 1 else "Safe"
+    label = "Spam" if predicted_class_E == 1 else "Safe" # Convert numeric prediction to human-readable label
     
     return label, confidence_E
 #GRU Model
-def classify_Email_GRU(message: str) -> str:
-    maxlen=100
-    sequence = tokenizer.texts_to_sequences([message])
-    padded = pad_sequences(sequence, maxlen=maxlen, padding='post')
+def classify_Email_GRU(message: str) -> str: 
+    maxlen=100 # Maximum sequence length for padding (must match training configuration)
+    sequence = tokenizer.texts_to_sequences([message]) # Convert text to sequence of integer tokens using pre-fitted tokenizer
+    padded = pad_sequences(sequence, maxlen=maxlen, padding='post')  # Pad sequence to fixed length (100), adding zeros at the end if needed
 
     probability = GRUModel.predict(padded, verbose=0)[0][0]
     
@@ -74,7 +74,7 @@ def classify_Email_GRU(message: str) -> str:
     confidence = probability if label == "Spam" else 1 - probability
     
     return str(label), float(confidence)
-def All_Email(Message):
+def All_Email(Message): #calls all the models used to classify EMAILS
     ResultGRU = classify_Email_GRU(Message)
     ResultSVM = classify_email_with_svm(Message)
     ResultNB = Classify_EMAIL_NB(Message)
@@ -84,17 +84,27 @@ def All_Email(Message):
         "SVM": {"label": ResultSVM[0], "confidence": ResultSVM[1] if ResultSVM[1] is not None else None},
         "NBE": {"label": ResultNB[0], "confidence": ResultNB[1]}
     }
-def All_SMS(Message):
+def All_SMS(Message): #this function is used to call all the models that classify SMS messages
     ResultNBSMS = Classify_SMS_NB(Message)
     ResultLR = classify_sms_with_lr(Message)
 
-    return {
+    return { #returns the data as a dic
         "NBSMS": {"label": ResultNBSMS[0], "confidence": ResultNBSMS[1]},
         "LR": {"label": ResultLR[0], "confidence": ResultLR[1]}
     }
-
+def Get_Models(): 
+    
+    Models = { #lists all the models used in the project 
+        "NBE": "Naive Bayes Email Classifier",
+        "NBSMS": "Naive Bayes SMS Classifier", 
+        "GRU": "Gated Recurrent Unit", 
+        "SVM": "Support Vector Machine",
+        "LR": "Logisitic Regression",
+    }
+    return Models
+    
 def run_model_classification(message: str, ModelSelection: str) -> tuple: 
-    Model_function_dic = {
+    Model_function_dic = { #a dictionary thats used to equate a model selection value and match it with the correct function to call 
         "NBE": Classify_EMAIL_NB,
         "NBSMS": Classify_SMS_NB, 
         "GRU": classify_Email_GRU, 
@@ -113,7 +123,7 @@ def run_model_classification(message: str, ModelSelection: str) -> tuple:
 
     return result #i moved the result handling back to the API call to handle, this now just returns a result "as-is"
 
-def main(args):
+def main(args): #was the main way to utilize this file until assignment 3, keeping for debugging 
     if len(args) > 2:
         match args[1]:
             case ("SVM"):
