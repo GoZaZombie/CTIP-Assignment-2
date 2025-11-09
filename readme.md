@@ -65,7 +65,7 @@ once in the directory run the command:
 
 *IF you recieve an error that running scripts is disabled*
 
-![Image](Images\NpmRunError.png)
+![Image](Images/NpmRunError.png)
 
 *run the command*
 `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
@@ -79,7 +79,7 @@ After the initalization head to the link provided in the terminal
 *it should look like* 
 `http://localhost:5173` 
 
-![Image](Images\SpamChecker.png)
+![Image](Images/SpamChecker.png)
 
 This will allow you to interact with the model classification from a userfriendly interface
 
