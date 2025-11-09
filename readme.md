@@ -1,4 +1,4 @@
-# Instructions for Using this Codebase:
+# Spam Classification Models:
 A collection of machine learning models for classifying spam in SMS messages and emails.
 
 **Authors**
@@ -11,7 +11,7 @@ A collection of machine learning models for classifying spam in SMS messages and
 `scikit-learn`
 `numpy` 
 `joblib` 
-`matplot` 
+`matplotlib` 
 `seaborn` 
 `tensorflow`
 `Node.js` 
@@ -46,12 +46,12 @@ Here's an example which uses the Naive Bayes email clasification model:
 
 `python CLASSIFY.py NBE "Subject: brighten those teeth  get your  teeth bright white now !  have you considered professional teeth whitening ? if so , you  know it usually costs between $ 300 and $ 500 from your local  dentist !"`
 
-# **Web-Based Application Initalization** 
+# **Web-Based Application Initialization** 
 
-First to begin the FastAPI run the following code in your terminal:  
+First to begin the FastAPI run the following code in your terminal in the CTIP-ASSIGNMENT-2 Directory:  
 `python -m uvicorn TestAPI:app --reload` 
 
-Once the initalization has succeeded, open a second terminal 
+Once the initialization has succeeded, open a second terminal 
 
 In this second terminal navigate to the vue-project folder with the command 
 `cd vue-project` 
