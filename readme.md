@@ -42,7 +42,7 @@ Run CLASSIFY.py from the terminal inside the project directory:
 * `ALLE` - *All Email Models*
 * `ALLSMS` - *All SMS Models*
 
-here's an example which uses the Naive Bayes email clasification model:
+Here's an example which uses the Naive Bayes email clasification model:
 
 `python CLASSIFY.py NBE "Subject: brighten those teeth  get your  teeth bright white now !  have you considered professional teeth whitening ? if so , you  know it usually costs between $ 300 and $ 500 from your local  dentist !"`
 
@@ -53,30 +53,30 @@ First to begin the FastAPI run the following code in your terminal:
 
 Once the initalization has succeeded, open a second terminal 
 
-in this second terminal navigate to the vue-project folder with the command 
+In this second terminal navigate to the vue-project folder with the command 
 `cd vue-project` 
 
-*this assumes you are already within the CTIP-ASSIGNMENT-2 directory*
+*This assumes you are already within the CTIP-ASSIGNMENT-2 directory*
 
 
 
-once in the directory run the command: 
+Once in the directory run the command: 
 `npm run dev`
 
 *IF you recieve an error that running scripts is disabled*
 
 ![Image](Images/NpmRunError.png)
 
-*run the command*
+*Run the command*
 `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
 
 
-*this will allow scripts for ONLY the current powershell session, then retry the npm command above* 
+*This will allow scripts for ONLY the current powershell session, then retry the npm command above* 
 
 
 
-After the initalization head to the link provided in the terminal 
-*it should look like* 
+After the initalization head to the link provided in the terminal. 
+*It should look like* 
 `http://localhost:5173` 
 
 ![Image](Images/SpamChecker.png)
