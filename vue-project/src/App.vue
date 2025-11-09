@@ -8,6 +8,7 @@ const confidence = ref<number | null>(null)
 const error = ref('')
 import emailIcon from '@/assets/email.png'
 import smsIcon from '@/assets/sms.png'
+import instructions from '@/assets/instructions.svg'
 const multiResults = ref<{ [key: string]: any } | null>(null)
 const modelNames: Record<string, string> = {
   GRU: 'Gated Recurrent Unit',
@@ -116,7 +117,9 @@ async function submitForm() {
 
 <template>
   <h1>Spam Checker</h1>
+  <img v-if="results.length < 1" :src="instructions" alt="Instructions" style="width:40vmin;"/>
   <div class="results-container" ref="scrollContainer">
+    
   <div v-for="result in results" :key="result.id" class="result" 
     :class="{
       spam: result.prediction === 'Spam',
@@ -181,9 +184,15 @@ async function submitForm() {
         </option>
       </select>
 
- 
-      <textarea v-model="message" placeholder="Enter message" ></textarea>
-<!--add input  character length indicator-->>
+      <div style="position: relative; display: contents;">
+      <textarea v-model="message" placeholder="Enter message" maxlength="300"></textarea>
+      <div 
+      style="position: absolute; align-self: flex-end; font-size: 2vmin; pointer-events: none;"
+      :style="{ color: message.length >= 300 ? 'red' : message.length > 250 ? 'orange' : 'lightgreen' }"
+      >
+      {{ message.length }} / 300
+      </div>
+      </div>
 
 
 

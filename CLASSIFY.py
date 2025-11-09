@@ -99,7 +99,7 @@ def Get_Models():
         "NBSMS": "Naive Bayes SMS Classifier", 
         "GRU": "Gated Recurrent Unit", 
         "SVM": "Support Vector Machine",
-        "LR": "Logisitic Regression",
+        "LR": "Logistic Regression",
     }
     return Models
     
