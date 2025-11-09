@@ -2,7 +2,7 @@
 A collection of machine learning models for classifying spam in SMS messages and emails.
 
 
-# Libraries needed:
+# Libraries Required:
 `pandas`
 `scikit-learn`
 `numpy` 
@@ -15,7 +15,6 @@ A collection of machine learning models for classifying spam in SMS messages and
 `FastAPI`
 
 This repo contains the .pkl files for each model already.
-
 If they are missing, run the following program:
 
 * LR_SMS.py
