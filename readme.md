@@ -51,6 +51,7 @@ Once the initalization has succeeded, open a second terminal
 
 in this second terminal navigate to the vue-project folder with the command 
 `cd vue-project` 
+
 *this assumes you are already within the CTIP-ASSIGNMENT-2 directory*
 
 
