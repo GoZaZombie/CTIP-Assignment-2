@@ -47,12 +47,14 @@ here's an example which uses the Naive Bayes email clasification model:
 First to begin the FastAPI run the following code in your terminal:  
 `python -m uvicorn TestAPI:app --reload` 
 
-Once this task has been accomplished and you have verified the initalization open a second terminal 
+Once the initalization has succeeded, open a second terminal 
 
-in this next terminal navigate to the vue-project folder with the command 
+in this second terminal navigate to the vue-project folder with the command 
 `cd vue-project` 
-
 *this assumes you are already within the CTIP-ASSIGNMENT-2 directory*
+
+
+
 once in the directory run the command: 
 `npm run dev`
 
@@ -60,4 +62,4 @@ After the initalization head to the link provided in the terminal
 *it should look like* 
 `http://localhost:5173` 
 
-
+This will allow you to interact with the model classification from a userfriendly interface
