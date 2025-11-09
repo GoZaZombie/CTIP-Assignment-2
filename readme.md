@@ -1,6 +1,10 @@
 # Instructions for using this codebase:
 A collection of machine learning models for classifying spam in SMS messages and emails.
 
+**Authors**
+*Denver Cope*
+*Douglas Massey*
+*Isath De Silva*
 
 # Libraries Required:
 `pandas`
