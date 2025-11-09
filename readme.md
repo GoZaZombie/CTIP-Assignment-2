@@ -23,21 +23,21 @@ If they are missing, run the following program:
 * GRUTrainSpam.ipynb
 * NaiveBayesTrain.ipynb
 
-# TO QUERY THE MODELS:
+# To Query The Models:
 
 Run CLASSIFY.py from the terminal inside the project directory:
 
 `python CLASSIFY.py <model> <input string to query>`
 
-# these are the accepted inputs for <model>:
+# Accepted Inputs For Model Choice:
 
-`LR`- *Logistic Regression (SMS)*
-`SVM` - *Linear Vector Classifier (EMAIL)*
-`NBSMS` - *Naive Bayes(SMS)*
-`NBE` - *Naive Bayes for (EMAIL)*
-`GRU` - *Gated Recurrent Unit (EMAIL)*
-`ALLE` - *All Email Models*
-`ALLSMS` - *All SMS Models*
+* `LR`- *Logistic Regression (SMS)*
+* `SVM` - *Linear Vector Classifier (EMAIL)*
+* `NBSMS` - *Naive Bayes(SMS)*
+* `NBE` - *Naive Bayes for (EMAIL)*
+* `GRU` - *Gated Recurrent Unit (EMAIL)*
+* `ALLE` - *All Email Models*
+* `ALLSMS` - *All SMS Models*
 
 here's an example which uses the Naive Bayes email clasification model:
 
