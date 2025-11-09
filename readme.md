@@ -2,9 +2,9 @@
 A collection of machine learning models for classifying spam in SMS messages and emails.
 
 **Authors**
-*Denver Cope*
-*Douglas Massey*
-*Isath De Silva*
+*Denver Cope,*
+*Douglas Massey,*
+*and Isath De Silva*
 
 # Libraries Required:
 `pandas`
@@ -63,8 +63,24 @@ in this second terminal navigate to the vue-project folder with the command
 once in the directory run the command: 
 `npm run dev`
 
+*IF you recieve an error that running scripts is disabled*
+
+![Image](Images\NpmRunError.png)
+
+*run the command*
+`Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+
+
+*this will allow scripts for ONLY the current powershell session, then retry the npm command above* 
+
+
+
 After the initalization head to the link provided in the terminal 
 *it should look like* 
 `http://localhost:5173` 
 
+![Image](Images\SpamChecker.png)
+
 This will allow you to interact with the model classification from a userfriendly interface
+
+Follow the onscreen guide for how to interact with the website!
