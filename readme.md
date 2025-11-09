@@ -1,4 +1,4 @@
-# Instructions for using this codebase:
+# Instructions for Using this Codebase:
 A collection of machine learning models for classifying spam in SMS messages and emails.
 
 **Authors**
@@ -26,13 +26,13 @@ If they are missing, run the following program:
 * GRUTrainSpam.ipynb
 * NaiveBayesTrain.ipynb
 
-# To Query The Models:
+# To Query the Models:
 
 Run CLASSIFY.py from the terminal inside the project directory:
 
 `python CLASSIFY.py <model> <input string to query>`
 
-# Accepted Inputs For Model Choice:
+# Accepted Inputs for Model Choice:
 
 * `LR`- *Logistic Regression (SMS)*
 * `SVM` - *Linear Vector Classifier (EMAIL)*
@@ -46,7 +46,7 @@ here's an example which uses the Naive Bayes email clasification model:
 
 `python CLASSIFY.py NBE "Subject: brighten those teeth  get your  teeth bright white now !  have you considered professional teeth whitening ? if so , you  know it usually costs between $ 300 and $ 500 from your local  dentist !"`
 
-# **Web-Based application initalization** 
+# **Web-Based Application Initalization** 
 
 First to begin the FastAPI run the following code in your terminal:  
 `python -m uvicorn TestAPI:app --reload` 
